@@ -1,0 +1,18 @@
+{
+  "name": "sno-mongo-ku",
+  "version": "1.1.2",
+  "description": "a wrapper to mongodb driver, provide simple method in chinese to handle the mongodb.",
+  "main": "snoMongoKu.js",
+  "devDependencies": {
+    "@types/mongodb": "^3.6.3",
+    "@types/node": "^14.14.16"
+  },
+  "scripts": {
+    "test": "ts-node ."
+  },
+  "author": "snomiao@gmail.com",
+  "license": "GPLv3",
+  "dependencies": {
+    "mongodb": "^3.6.3"
+  }
+}
