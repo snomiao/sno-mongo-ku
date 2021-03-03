@@ -1,3 +1,12 @@
+## [2.0.7](https://github.com/snomiao/sno-mongo-ku/compare/v2.0.6...v2.0.7) (2021-03-03)
+
+
+### Bug Fixes
+
+* https repo url ([e04475a](https://github.com/snomiao/sno-mongo-ku/commit/e04475a97394679c3e6bb3fa2eca343351950071))
+
+
+
 ## [2.0.6](https://github.com/snomiao/sno-mongo-ku/compare/v2.0.5...v2.0.6) (2021-03-03)
 
 
