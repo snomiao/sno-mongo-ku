@@ -6,6 +6,8 @@ Just have fun with chinese programming ~
 
 ## Usage
 
+`npm i sno-mongo-ku`
+
 ### 1. Insert and print
 
 These examples have the same purpose:
@@ -67,6 +69,8 @@ For further usages, you can simply type `db._` and press `ctrl + space` on vscod
 
 Methods: `单增 单删 单改 单查 单查替 单查改 单查删 单补 单增改 upsertOne 多增 多删 多改 多查 多查数 多查列 多补 多增改 upsertMany 聚合 索引 索引删 复索引 复索引删 状态 数量估计 监视 改名 名称 去重 销毁`
 
+Just like this:
+![ctrl+space](docs/img/ctrl+space.png)
 ## ref
 
 - [自动化发布npm包及生成Github Changelog]( https://banyudu.com/posts/auto_publish_npm_and_generate_github_changelog.882513 )
