@@ -27,5 +27,17 @@
   ],
   "directories": {
     "doc": "docs"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/snomiao/sno-mongo-ku.git"
+  },
+  "keywords": [
+    "mongodb",
+    "wrapper"
+  ],
+  "bugs": {
+    "url": "https://github.com/snomiao/sno-mongo-ku/issues"
+  },
+  "homepage": "https://github.com/snomiao/sno-mongo-ku#readme"
 }
