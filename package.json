@@ -18,11 +18,14 @@
     "prepublishOnly": "npm run build"
   },
   "author": "snomiao@gmail.com",
-  "license": "GPLv3",
+  "license": "GPL-3.0-or-later",
   "dependencies": {
     "mongodb": "^3.6.3"
   },
   "files": [
     "dist/*"
-  ]
+  ],
+  "directories": {
+    "doc": "docs"
+  }
 }
