@@ -30,7 +30,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/snomiao/sno-mongo-ku.git"
+    "url": "git+https://github.com/snomiao/sno-mongo-ku.git"
   },
   "keywords": [
     "mongodb",
