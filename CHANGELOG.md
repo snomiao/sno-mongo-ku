@@ -1,3 +1,18 @@
+## [2.2.2](https://github.com/snomiao/sno-mongo-ku/compare/v2.0.7...v2.2.2) (2021-03-07)
+
+
+### Bug Fixes
+
+* install dev publish tools ([fa44689](https://github.com/snomiao/sno-mongo-ku/commit/fa44689089f2eae5c4222245e6d5b871dfe2ef8b))
+* package-lock ([81e5407](https://github.com/snomiao/sno-mongo-ku/commit/81e5407eabac23ef54c6a5d937806081c6cdce6e))
+
+
+### Features
+
+* index and dotenv ([b68f406](https://github.com/snomiao/sno-mongo-ku/commit/b68f406711a5499587b687c955ddccaf13f58d75))
+
+
+
 ## [2.0.7](https://github.com/snomiao/sno-mongo-ku/compare/v2.0.6...v2.0.7) (2021-03-03)
 
 
