@@ -1,3 +1,7 @@
+## [2.2.3](https://github.com/snomiao/sno-mongo-ku/compare/v2.2.2...v2.2.3) (2021-03-07)
+
+
+
 ## [2.2.2](https://github.com/snomiao/sno-mongo-ku/compare/v2.0.7...v2.2.2) (2021-03-07)
 
 
