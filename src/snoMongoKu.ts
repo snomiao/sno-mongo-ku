@@ -7,9 +7,12 @@ import mongodb from 'mongodb'
 
 // unit test
 if (require.main === module) (async () => {
-    const db = await snoMongoKu('mongodb://localhost:27017/测试')
-    await db.日志.单增({ 创建于: new Date(), 内容: '测试/(20210304)' })
-    await db.日志.单补({ _id: 'test', 创建于: new Date(), 内容: '测试/(20210304)' })
+    require('dotenv').config()
+    const { MONGO_URI } = process.env;
+    const db = await snoMongoKu(MONGO_URI || 'mongodb://localhost:27017/测试')
+    await db.日志.单增({ 创建于: new Date(), 内容: '测试/(20210304)', 标记: 'asdf' })
+    console.table(await db.日志.多查列({}))
+    await db.日志.单补({ 修改于: new Date(), 内容: '测试2333', 标记: 'asdf' }, { 标记: 1 })
     console.table(await db.日志.多查列({}))
     await db._client.close()
 })().then(console.log).catch(console.error)
@@ -23,7 +26,7 @@ export const 合集增强 = (合集: mongodb.Collection) => Object.assign(合集
     单查替: 合集.findOneAndReplace,
     单查改: 合集.findOneAndUpdate,
     单查删: 合集.findOneAndDelete,
-    单补: (表: 表, 索引键列: string[] = ['_id'], 选项?: mongodb.UpdateOneOptions) => 合集.updateOne(Object.fromEntries(索引键列.map(键 => [键, 表[键]])), { $set: 表 }, { upsert: true, ...选项 }),
+    单补: (表: 表, 索引: 表 = { _id: 1 }, 选项?: mongodb.UpdateOneOptions) => 合集.updateOne(Object.fromEntries(Object.keys(索引).map(键 => [键, 表[键]])), { $set: 表 }, { upsert: true, ...选项 }),
     单增改: ((查询: any, 更新: any, options: any, cb?: any) => 合集.updateOne(查询, 更新, { upsert: true, ...options }, cb)) as typeof 合集.updateOne,
     upsertOne: ((查询: any, 更新: any, options: any, cb?: any) => 合集.updateOne(查询, 更新, { upsert: true, ...options }, cb)) as typeof 合集.updateOne,
     多增: 合集.insertMany,
@@ -32,7 +35,7 @@ export const 合集增强 = (合集: mongodb.Collection) => Object.assign(合集
     多查: 合集.find,
     多查数: (查询表: mongodb.FilterQuery<any> = {}, 选项?: mongodb.FindOneOptions<any>) => 合集.find(查询表, 选项).count(),
     多查列: (查询表: mongodb.FilterQuery<any> = {}, 选项?: mongodb.FindOneOptions<any>) => 合集.find(查询表, 选项).toArray(),
-    多补: (表列: 表[], 索引键列: string[] = ['_id'], 选项?: mongodb.CollectionBulkWriteOptions) => 合集.bulkWrite(表列.map((表: 表) => ({ updateOne: { filter: Object.fromEntries(索引键列.map(键 => [键, 表[键]])), update: { $set: 表 }, upsert: true } })), 选项),
+    多补: (表列: 表[], 索引: 表 = { _id: 1 }, 选项?: mongodb.CollectionBulkWriteOptions) => 合集.bulkWrite(表列.map((表: 表) => ({ updateOne: { filter: Object.fromEntries(Object.keys(索引).map(键 => [键, 表[键]])), update: { $set: 表 }, upsert: true } })), 选项),
     多增改: ((查询: any, 更新: any, options: any, cb?: any) => 合集.updateMany(查询, 更新, { upsert: true, ...options }, cb)) as typeof 合集.updateMany,
     upsertMany: ((查询: any, 更新: any, options: any, cb?: any) => 合集.updateMany(查询, 更新, { upsert: true, ...options }, cb)) as typeof 合集.updateMany,
     聚合: 合集.aggregate,
