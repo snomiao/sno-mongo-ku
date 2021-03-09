@@ -1,3 +1,12 @@
+## [2.3.5](https://github.com/snomiao/sno-mongo-ku/compare/v2.3.4...v2.3.5) (2021-03-09)
+
+
+### Bug Fixes
+
+* return type ([94107ea](https://github.com/snomiao/sno-mongo-ku/commit/94107ea255477ce713902057b73982b650844e9e))
+
+
+
 ## [2.3.4](https://github.com/snomiao/sno-mongo-ku/compare/v2.3.3...v2.3.4) (2021-03-09)
 
 
