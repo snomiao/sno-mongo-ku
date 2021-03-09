@@ -92,5 +92,9 @@ const 合集增强 = (合集: mongodb.Collection) => Object.assign(合集, {
 })
 // ref https://zhuanlan.zhihu.com/p/59434318
 const 返回值类型获取 = <T>(_需推断函数: (_: any) => T): T => ({} as T)
+
 const 合集增强虚拟返回值 = 返回值类型获取(合集增强);
 type 增强合集 = typeof 合集增强虚拟返回值;
+
+const 雪芒果库虚拟返回值 = 返回值类型获取(合集增强);
+type 雪芒果库 = typeof 雪芒果库虚拟返回值;
