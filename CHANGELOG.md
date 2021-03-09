@@ -1,3 +1,12 @@
+## [2.3.3](https://github.com/snomiao/sno-mongo-ku/compare/v2.3.2...v2.3.3) (2021-03-09)
+
+
+### Bug Fixes
+
+* 先计数开关 ([2e3f360](https://github.com/snomiao/sno-mongo-ku/commit/2e3f36088162cc23b85f6045946a71d9451bb097))
+
+
+
 ## [2.3.2](https://github.com/snomiao/sno-mongo-ku/compare/v2.3.1...v2.3.2) (2021-03-09)
 
 
