@@ -79,11 +79,12 @@ const 合集增强 = (合集: mongodb.Collection) => Object.assign(合集, {
             $project && { $project }, //出于索引性能的原因 project要放在sort之后
             $limit && { $limit },
         ].filter(e => e))) {
-            if(!doc._id) throw new TypeError('doc._id is required')
+            if (!doc._id) throw new TypeError('doc._id is required')
             await q.onEmpty(); q.add(async () => {
-                const UpdateQuery = await func(doc, index, count)
+                const PromiseLike = func(doc, index, count);
+                const UpdateQuery = await (PromiseLike && PromiseLike.catch((err) => { if (止于错) throw err; 错误列.push(err) }))
                 UpdateQuery && await 合集.updateOne({ _id: doc._id }, UpdateQuery)
-            }).catch((err) => { if (止于错) throw err; 错误列.push(err) })
+            })
             index++
         }
         await q.onIdle()
