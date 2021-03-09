@@ -1,3 +1,12 @@
+## [2.3.1](https://github.com/snomiao/sno-mongo-ku/compare/v2.3.0...v2.3.1) (2021-03-09)
+
+
+### Bug Fixes
+
+* 止于错 ([d6fd31e](https://github.com/snomiao/sno-mongo-ku/commit/d6fd31e0946ece245c5dec6d1329cb3de1e75eff))
+
+
+
 # [2.3.0](https://github.com/snomiao/sno-mongo-ku/compare/v2.2.3...v2.3.0) (2021-03-09)
 
 
