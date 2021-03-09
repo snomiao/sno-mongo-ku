@@ -1,3 +1,12 @@
+## [2.3.2](https://github.com/snomiao/sno-mongo-ku/compare/v2.3.1...v2.3.2) (2021-03-09)
+
+
+### Bug Fixes
+
+* aggregate error ([4a4cf32](https://github.com/snomiao/sno-mongo-ku/commit/4a4cf327114a9cb4d4d24d7cd5584de73af8b174))
+
+
+
 ## [2.3.1](https://github.com/snomiao/sno-mongo-ku/compare/v2.3.0...v2.3.1) (2021-03-09)
 
 
