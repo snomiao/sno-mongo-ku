@@ -1,3 +1,12 @@
+## [2.3.4](https://github.com/snomiao/sno-mongo-ku/compare/v2.3.3...v2.3.4) (2021-03-09)
+
+
+### Bug Fixes
+
+* await q.onIdle() ([85757ce](https://github.com/snomiao/sno-mongo-ku/commit/85757ce0c1e1a82c97bbcb3fe693627e6460a813))
+
+
+
 ## [2.3.3](https://github.com/snomiao/sno-mongo-ku/compare/v2.3.2...v2.3.3) (2021-03-09)
 
 
