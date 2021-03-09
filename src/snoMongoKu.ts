@@ -67,10 +67,11 @@ const 合集增强 = (合集: mongodb.Collection) => Object.assign(合集, {
             $match?: FilterQuery<any>, $sample?: { size: number },
             $limit?: number, $sort?: any, $project?: any
         } = {},
-        { 并行数 = 1, 止于错 = true } = {}
+        { 并行数 = 1, 止于错 = true, 归集报错 = true } = {}
     ) => {
         let index = 0, count = await 合集.countDocuments($match)
         const q = new PQueue({ concurrency: 并行数 })
+        const 错误列 = []
         for await (const doc of 合集.aggregate([
             $match && { $match },
             $sample && { $sample },
@@ -81,9 +82,10 @@ const 合集增强 = (合集: mongodb.Collection) => Object.assign(合集, {
             await q.onEmpty(); q.add(async () => {
                 const UpdateQuery = await func(doc, index, count)
                 UpdateQuery && await 合集.updateOne({ _id: doc._id }, UpdateQuery)
-            }).catch((err) => { if (止于错) throw err })
+            }).catch((err) => { if (止于错) throw err; 错误列.push(err) })
             index++
         }
+        if (归集报错 && 错误列.length) throw AggregateError(错误列)
         return count
     }
 })
