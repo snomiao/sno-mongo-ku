@@ -28,9 +28,9 @@ const 合集增强虚拟返回值 = 返回值类型获取(合集增强);
 type 增强合集 = typeof 合集增强虚拟返回值;
 
 const 雪芒果库虚拟返回值 = 返回值类型获取(snoMongoKu);
-type 雪芒果库 = typeof 雪芒果库虚拟返回值;
+type snoMongoKu = typeof 雪芒果库虚拟返回值;
 
-export = snoMongoKu as (uri: string) => 雪芒果库
+export = snoMongoKu as (uri: string) => snoMongoKu
 async function snoMongoKu(uri: string) {
     const client = await mongodb.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
     return new Proxy(
