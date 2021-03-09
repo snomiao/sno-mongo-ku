@@ -3,7 +3,11 @@
  * author: YiDong Zhuo(snomiao@gmail.com)
  */
 
-import mongodb from 'mongodb'
+import mongodb, { FilterQuery, UpdateOneOptions, UpdateQuery } from 'mongodb'
+import PQueue from 'p-queue';
+
+// 这个等号很重要
+
 
 // unit test
 if (require.main === module) (async () => {
@@ -17,8 +21,15 @@ if (require.main === module) (async () => {
     await db._client.close()
 })().then(console.log).catch(console.error)
 
+export = snoMongoKu
+async function snoMongoKu(uri: string) {
+    const client = await mongodb.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
+    return new Proxy(client.db(), { get: (t, p) => p === '_client' ? client : t[p] ?? 合集增强(t.collection(p.toString())) }
+    ) as (mongodb.Db & { _client: mongodb.MongoClient, _demoCollection: 增强合集, _示例合集: 增强合集 } & { [k: string]: 增强合集 })
+}
+
 type 表 = { _id?: mongodb.ObjectID | any, [x: string]: any; }
-export const 合集增强 = (合集: mongodb.Collection) => Object.assign(合集, {
+const 合集增强 = (合集: mongodb.Collection) => Object.assign(合集, {
     单增: 合集.insertOne,
     单删: 合集.deleteOne,
     单改: 合集.updateOne,
@@ -50,14 +61,33 @@ export const 合集增强 = (合集: mongodb.Collection) => Object.assign(合集
     名称: 合集.collectionName,
     去重: 合集.distinct,
     销毁: 合集.drop,
+    并行各改: async (
+        func: (doc: any, index: number, count: number) => Promise<UpdateQuery<any> | void> | void,
+        { $match, $sample, $limit, $sort, $project }: {
+            $match?: FilterQuery<any>, $sample?: { size: number },
+            $limit?: number, $sort?: any, $project?: any
+        } = {},
+        { 并行数 = 1, 止于错 = false } = {}
+    ) => {
+        let index = 0, count = await 合集.countDocuments($match)
+        const q = new PQueue({ concurrency: 并行数 })
+        for await (const doc of 合集.aggregate([
+            $match && { $match },
+            $sample && { $sample },
+            $sort && { $sort }, // sort 要在limit之前
+            $project && { $project }, //出于索引性能的原因 project要放在sort之后
+            $limit && { $limit },
+        ].filter(e => e))) {
+            await q.onEmpty(); q.add(async () => {
+                const UpdateQuery = await func(doc, index, count)
+                UpdateQuery && await 合集.updateOne({ _id: doc._id }, UpdateQuery)
+            }).catch((err) => { if (止于错) throw err })
+            index++
+        }
+        return count
+    }
 })
 // ref https://zhuanlan.zhihu.com/p/59434318
 const 返回值类型获取 = <T>(_需推断函数: (_: any) => T): T => ({} as T)
 const 合集增强虚拟返回值 = 返回值类型获取(合集增强);
 type 增强合集 = typeof 合集增强虚拟返回值;
-
-export default async function snoMongoKu(uri: string) {
-    const client = await mongodb.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
-    return new Proxy(client.db(), { get: (t, p) => p === '_client' ? client : t[p] ?? 合集增强(t.collection(p.toString())) }
-    ) as (mongodb.Db & { _client: mongodb.MongoClient, _demoCollection: 增强合集, _示例合集: 增强合集 } & { [k: string]: 增强合集 })
-}

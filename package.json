@@ -15,6 +15,7 @@
   },
   "scripts": {
     "build": "tsc",
+    "watch": "tsc --watch",
     "test": "ts-node .",
     "version": "conventional-changelog -p angular -i CHANGELOG.md -s && git add CHANGELOG.md",
     "postversion": "git push --follow-tags",
@@ -23,7 +24,8 @@
   "author": "snomiao@gmail.com",
   "license": "GPL-3.0-or-later",
   "dependencies": {
-    "mongodb": "^3.6.3"
+    "mongodb": "^3.6.3",
+    "p-queue": "^6.6.2"
   },
   "files": [
     "dist/*"
