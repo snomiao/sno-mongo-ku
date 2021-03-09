@@ -85,7 +85,8 @@ const 合集增强 = (合集: mongodb.Collection) => Object.assign(合集, {
             }).catch((err) => { if (止于错) throw err; 错误列.push(err) })
             index++
         }
-        if (错归集 && 错误列.length) throw AggregateError(错误列)
+        await q.onIdle()
+        if (错误列.length) throw AggregateError(错误列)
         return count
     }
 })
