@@ -67,7 +67,7 @@ const 合集增强 = (合集: mongodb.Collection) => Object.assign(合集, {
             $match?: FilterQuery<any>, $sample?: { size: number },
             $limit?: number, $sort?: any, $project?: any
         } = {},
-        { 并行数 = 1, 止于错 = false } = {}
+        { 并行数 = 1, 止于错 = true } = {}
     ) => {
         let index = 0, count = await 合集.countDocuments($match)
         const q = new PQueue({ concurrency: 并行数 })
