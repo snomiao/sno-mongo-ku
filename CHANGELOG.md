@@ -1,3 +1,12 @@
+## [2.3.10](https://github.com/snomiao/sno-mongo-ku/compare/v2.3.9...v2.3.10) (2021-03-09)
+
+
+### Bug Fixes
+
+* rename return type ([95e89c0](https://github.com/snomiao/sno-mongo-ku/commit/95e89c0314e7362380947db2f3eaeea34d1e5213))
+
+
+
 ## [2.3.9](https://github.com/snomiao/sno-mongo-ku/compare/v2.3.8...v2.3.9) (2021-03-09)
 
 
