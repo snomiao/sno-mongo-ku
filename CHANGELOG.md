@@ -1,3 +1,12 @@
+## [2.3.6](https://github.com/snomiao/sno-mongo-ku/compare/v2.3.5...v2.3.6) (2021-03-09)
+
+
+### Bug Fixes
+
+* doc._id is required ([adbf169](https://github.com/snomiao/sno-mongo-ku/commit/adbf16976ea2353dce2c385965a96b187aceb25f))
+
+
+
 ## [2.3.5](https://github.com/snomiao/sno-mongo-ku/compare/v2.3.4...v2.3.5) (2021-03-09)
 
 
