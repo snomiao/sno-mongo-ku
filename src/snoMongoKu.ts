@@ -30,10 +30,12 @@ type 增强合集 = typeof 合集增强虚拟返回值;
 const 雪芒果库虚拟返回值 = 返回值类型获取(snoMongoKu);
 type 雪芒果库 = typeof 雪芒果库虚拟返回值;
 
-export = snoMongoKu
+export = snoMongoKu as (uri: string) => 雪芒果库
 async function snoMongoKu(uri: string) {
     const client = await mongodb.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
-    return new Proxy(client.db(), { get: (t, p) => p === '_client' ? client : t[p] ?? 合集增强(t.collection(p.toString())) }
+    return new Proxy(
+        client.db(),
+        { get: (t, p) => p === '_client' ? client : t[p] ?? 合集增强(t.collection(p.toString())) }
     ) as (mongodb.Db & { _client: mongodb.MongoClient, _demoCollection: 增强合集, _示例合集: 增强合集 } & { [k: string]: 增强合集 })
 }
 
