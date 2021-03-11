@@ -1,5 +1,5 @@
 // TS 加载并运行
-import snoMongoKu from '../dist/snoMongoKu.js'
+import snoMongoKu from '../src/snoMongoKu';
 import dotenv from 'dotenv'; dotenv.config()
 
 require.main === module && (async () => {
