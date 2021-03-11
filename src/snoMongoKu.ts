@@ -18,7 +18,8 @@ if (require.main === module) (async () => {
     console.table(await db.日志.多查列({}))
     await db.日志.单补({ 修改于: new Date(), 内容: '测试2333', 标记: 'asdf' }, { 标记: 1 })
     console.table(await db.日志.多查列({}))
-    await db._client.close()
+    await db._client.close();
+    newFunction(db);
 })().then(console.log).catch(console.error)
 
 // ref https://zhuanlan.zhihu.com/p/59434318
@@ -28,15 +29,22 @@ const 合集增强虚拟返回值 = 返回值类型获取(合集增强);
 type 增强合集 = typeof 合集增强虚拟返回值;
 
 const 雪芒果库虚拟返回值 = 返回值类型获取(snoMongoKu);
-type snoMongoKu = typeof 雪芒果库虚拟返回值;
+type snoMongoKuPromise = typeof 雪芒果库虚拟返回值;
 
-export = snoMongoKu as (uri: string) => snoMongoKu
-async function snoMongoKu(uri: string) {
+interface snoMongoKu extends mongodb.Db { _client: mongodb.MongoClient; }
+interface snoMongoKuDb { [k: string]: 增强合集; }
+
+export default snoMongoKu
+function newFunction(db: snoMongoKu & snoMongoKuDb) {
+    (asdf => null)(db);
+}
+
+async function snoMongoKu(uri: string): Promise<snoMongoKu & snoMongoKuDb> {
     const client = await mongodb.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
     return new Proxy(
         client.db(),
         { get: (t, p) => p === '_client' ? client : t[p] ?? 合集增强(t.collection(p.toString())) }
-    ) as (mongodb.Db & { _client: mongodb.MongoClient, _demoCollection: 增强合集, _示例合集: 增强合集 } & { [k: string]: 增强合集 })
+    ) as (snoMongoKu & snoMongoKuDb)
 }
 
 type 表 = { _id?: mongodb.ObjectID | any, [x: string]: any; }
@@ -74,12 +82,12 @@ function 合集增强(合集: mongodb.Collection) {
         去重: 合集.distinct,
         销毁: 合集.drop,
         并行各改: async (
-            func: (doc: any, index: number, count: number) => Promise<UpdateQuery<any> | void> | void,
+            func: (doc: any, index: number, count: number) => Promise<UpdateQuery<any> | void> | UpdateQuery<any> | void,
             { $match, $sample, $limit, $sort, $project }: {
                 $match?: FilterQuery<any>; $sample?: { size: number; };
                 $limit?: number; $sort?: any; $project?: any;
             } = {},
-            { 并行数 = 1, 止于错 = true, 错归集 = true, 先计数 = true } = {}
+            { 并行数 = 1, 止于错 = true, 错误输出 = true, 先计数 = true } = {}
         ) => {
             let index = 0, count = 先计数 && await 合集.countDocuments($match) || null;
             const q = new PQueue({ concurrency: 并行数 });
@@ -91,21 +99,23 @@ function 合集增强(合集: mongodb.Collection) {
                 $project && { $project },
                 $limit && { $limit },
             ].filter(e => e))) {
-                if (!doc._id)
-                    throw new TypeError('doc._id is required');
+                if (!doc._id) throw new TypeError('doc._id is required');
                 await q.onEmpty(); q.add(async () => {
-                    const PromiseLike = func(doc, index, count);
-                    const UpdateQuery = await (PromiseLike && PromiseLike.catch((err) => {
-                        if (止于错)
-                            throw err; 错误列.push(err);
-                    }));
-                    UpdateQuery && await 合集.updateOne({ _id: doc._id }, UpdateQuery);
+                    try {
+                        const UpdateQuery = await func(doc, index, count)
+                        UpdateQuery && await 合集.updateOne({ _id: doc._id }, UpdateQuery);
+                    } catch (err) {
+                        if (止于错) throw err;
+                        else 错误列.push(err);
+                    }
                 });
                 index++;
             }
             await q.onIdle();
-            if (错误列.length)
-                throw AggregateError(错误列);
+            if (错误列.length) {
+                错误输出 && console.error(错误列)
+                throw AggregateError(错误列)
+            }
             return count;
         }
     });
