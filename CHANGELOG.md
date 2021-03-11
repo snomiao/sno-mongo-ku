@@ -1,3 +1,12 @@
+## [2.4.1](https://github.com/snomiao/sno-mongo-ku/compare/v2.4.0...v2.4.1) (2021-03-11)
+
+
+### Bug Fixes
+
+* remote test function ([0ae3309](https://github.com/snomiao/sno-mongo-ku/commit/0ae33096064dc59120e65cdbd4c1d7737d2bf2a8))
+
+
+
 # [2.4.0](https://github.com/snomiao/sno-mongo-ku/compare/v2.3.10...v2.4.0) (2021-03-11)
 
 
