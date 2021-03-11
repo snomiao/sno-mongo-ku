@@ -4,22 +4,8 @@
  */
 
 import mongodb, { FilterQuery, UpdateOneOptions, UpdateQuery } from 'mongodb'
+import { type } from 'os';
 import PQueue from 'p-queue';
-
-// 这个等号很重要
-
-
-// unit test
-if (require.main === module) (async () => {
-    require('dotenv').config()
-    const { MONGO_URI } = process.env;
-    const db = await snoMongoKu(MONGO_URI || 'mongodb://localhost:27017/测试')
-    await db.日志.单增({ 创建于: new Date(), 内容: '测试/(20210304)', 标记: 'asdf' })
-    console.table(await db.日志.多查列({}))
-    await db.日志.单补({ 修改于: new Date(), 内容: '测试2333', 标记: 'asdf' }, { 标记: 1 })
-    console.table(await db.日志.多查列({}))
-    await db._client.close();
-})().then(console.log).catch(console.error)
 
 // ref https://zhuanlan.zhihu.com/p/59434318
 const 返回值类型获取 = <T>(_需推断函数: (_: any) => T): T => ({} as T)
@@ -30,15 +16,17 @@ type 增强合集 = typeof 合集增强虚拟返回值;
 const 雪芒果库虚拟返回值 = 返回值类型获取(snoMongoKu);
 type snoMongoKuPromise = typeof 雪芒果库虚拟返回值;
 
-interface snoMongoKu extends mongodb.Db { _client: mongodb.MongoClient; }
-interface snoMongoKuDb { [k: string]: 增强合集; }
+interface snoMongoKuRaw extends mongodb.Db { _client: mongodb.MongoClient; }
+interface snoMongoKuEnhanced { [k: string]: 增强合集; }
+// interface snoMongoKu extends snoMongoKuRaw, snoMongoKuEnhanced { }
+type snoMongoKu = snoMongoKuRaw & snoMongoKuEnhanced
 export = snoMongoKu
-async function snoMongoKu(uri: string): Promise<snoMongoKu & snoMongoKuDb> {
+async function snoMongoKu(uri: string): Promise<snoMongoKu> {
     const client = await mongodb.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
     return new Proxy(
         client.db(),
         { get: (t: any, p) => p === '_client' ? client : t[p] ?? 合集增强(t.collection(p.toString())) }
-    ) as (snoMongoKu & snoMongoKuDb)
+    )
 }
 
 type 表 = { _id?: mongodb.ObjectID | any, [x: string]: any; }
