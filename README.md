@@ -41,27 +41,35 @@ import snoMongoKu from 'sno-mongo-ku'
 
 ```typescript
 import snoMongoKu from 'sno-mongo-ku'
-; (async()=>{
-    const db = await snoMongoKu('mongodb://localhost:27017/test-snomongoku')
-    await db.logs.drop()
-    await db.logs.upsertOne({_id: 'test', createdAt: new Date(), content: 'test/(20210304)' })
-    console.table( await db.logs.find().toArray() )
-    // await db._client.close() // optional
-})()
+const db = await snoMongoKu('mongodb://localhost:27017/test-snomongoku')
+await db.logs.drop()
+await db.logs.upsertOne({_id: 'test', createdAt: new Date(), content: 'test/(20210304)' })
+console.table( await db.logs.find().toArray() )
+// await db._client.close() // optional
+
 ```
 
 ```typescript
 import snoMongoKu from 'sno-mongo-ku'
-; (async()=>{
-    const db = await snoMongoKu('mongodb://localhost:27017/测试-雪芒果库')
-    await db.日志.销毁()
-    await db.日志.单增改({_id: 'test'   创建于: new Date(), 内容: '测试/(20210304)' })
-    console.table( await db.日志.多查列() )
-    // await db._client.close() // optional
-})()
+const db = await snoMongoKu('mongodb://localhost:27017/测试-雪芒果库')
+await db.日志.销毁()
+await db.日志.单增改({_id: 'test', 创建于: new Date(), 内容: '测试/(20210304)' })
+console.table( await db.日志.多查列() )
+// await db._client.close() // optional
+
 ```
 
-### 3. More...
+### 3. 并行各改
+
+```typescript
+import snoMongoKu from 'sno-mongo-ku'
+const db = await snoMongoKu('mongodb://localhost:27017/测试-雪芒果库')
+await db.日志.并行各改((日志)=>({$inc: 1}), {$match: {}})
+console.table( await db.日志.多查列() )
+```
+
+
+### 4. More...
 
 The `db._` you have got is just a alias of `client.db.collection($)`, which supports all MongoDB driver's collection methods, feel free to play with it.
 

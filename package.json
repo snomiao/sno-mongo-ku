@@ -5,7 +5,7 @@
   "main": "dist/snoMongoKu.js",
   "exports": {
     "require": "./dist/snoMongoKu.js",
-    "import": "./dist/snoMongoKu.mjs"
+    "import": "./dist/snoMongoKu.js"
   },
   "types": "dist/snoMongoKu.d.ts",
   "devDependencies": {
