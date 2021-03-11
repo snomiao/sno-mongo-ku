@@ -1,9 +1,9 @@
 {
   "name": "sno-mongo-ku",
-  "version": "2.4.2",
+  "version": "2.4.3",
   "description": "MongoDB simple wrapper, Provide simple method in chinese to handle the mongodb.",
   "main": "dist/snoMongoKu.js",
-  "exports":{
+  "exports": {
     "require": "./dist/snoMongoKu.js",
     "import": "./dist/snoMongoKu.mjs"
   },
