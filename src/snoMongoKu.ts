@@ -19,7 +19,6 @@ if (require.main === module) (async () => {
     await db.日志.单补({ 修改于: new Date(), 内容: '测试2333', 标记: 'asdf' }, { 标记: 1 })
     console.table(await db.日志.多查列({}))
     await db._client.close();
-    newFunction(db);
 })().then(console.log).catch(console.error)
 
 // ref https://zhuanlan.zhihu.com/p/59434318
@@ -35,9 +34,6 @@ interface snoMongoKu extends mongodb.Db { _client: mongodb.MongoClient; }
 interface snoMongoKuDb { [k: string]: 增强合集; }
 
 export default snoMongoKu
-function newFunction(db: snoMongoKu & snoMongoKuDb) {
-    (asdf => null)(db);
-}
 
 async function snoMongoKu(uri: string): Promise<snoMongoKu & snoMongoKuDb> {
     const client = await mongodb.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
