@@ -1,3 +1,12 @@
+# [2.4.0](https://github.com/snomiao/sno-mongo-ku/compare/v2.3.10...v2.4.0) (2021-03-11)
+
+
+### Features
+
+* 止于错 && 错误输出 && 增加 interface snoMongoKu && snoMongoKuDb ([0e33db1](https://github.com/snomiao/sno-mongo-ku/commit/0e33db1c6fe1681d9db3585a8104ae2831fab5ef))
+
+
+
 ## [2.3.10](https://github.com/snomiao/sno-mongo-ku/compare/v2.3.9...v2.3.10) (2021-03-09)
 
 
