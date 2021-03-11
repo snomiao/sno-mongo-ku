@@ -1,3 +1,13 @@
+## [2.4.5](https://github.com/snomiao/sno-mongo-ku/compare/v2.4.4...v2.4.5) (2021-03-11)
+
+
+### Bug Fixes
+
+* config local build task ([73899e6](https://github.com/snomiao/sno-mongo-ku/commit/73899e60036353202e3971b955a06228575d1b97))
+* npm build ([8c74a55](https://github.com/snomiao/sno-mongo-ku/commit/8c74a55245e0ed563af868c7efd101392d36c01e))
+
+
+
 ## [2.4.4](https://github.com/snomiao/sno-mongo-ku/compare/v2.4.3...v2.4.4) (2021-03-11)
 
 
