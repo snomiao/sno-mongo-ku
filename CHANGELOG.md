@@ -1,3 +1,12 @@
+## [2.4.6](https://github.com/snomiao/sno-mongo-ku/compare/v2.4.5...v2.4.6) (2021-03-11)
+
+
+### Bug Fixes
+
+* import ([3c227af](https://github.com/snomiao/sno-mongo-ku/commit/3c227af1b087d63a5ad6b3e87191ca44a107d512))
+
+
+
 ## [2.4.5](https://github.com/snomiao/sno-mongo-ku/compare/v2.4.4...v2.4.5) (2021-03-11)
 
 
