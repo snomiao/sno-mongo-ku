@@ -1,3 +1,12 @@
+## [2.4.2](https://github.com/snomiao/sno-mongo-ku/compare/v2.4.1...v2.4.2) (2021-03-11)
+
+
+### Bug Fixes
+
+* export interface ([d91bb33](https://github.com/snomiao/sno-mongo-ku/commit/d91bb33cc54ce271bd492098dbd0a4981524cefa))
+
+
+
 ## [2.4.1](https://github.com/snomiao/sno-mongo-ku/compare/v2.4.0...v2.4.1) (2021-03-11)
 
 
