@@ -3,6 +3,10 @@
   "version": "2.4.2",
   "description": "MongoDB simple wrapper, Provide simple method in chinese to handle the mongodb.",
   "main": "dist/snoMongoKu.js",
+  "exports":{
+    "require": "./dist/snoMongoKu.js",
+    "import": "./dist/snoMongoKu.mjs"
+  },
   "types": "dist/snoMongoKu.d.ts",
   "devDependencies": {
     "@commitlint/cli": "^12.0.1",
