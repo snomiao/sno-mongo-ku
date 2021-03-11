@@ -1,3 +1,12 @@
+## [2.4.8](https://github.com/snomiao/sno-mongo-ku/compare/v2.4.7...v2.4.8) (2021-03-11)
+
+
+### Bug Fixes
+
+* 重新配置测试用例import ([07e2661](https://github.com/snomiao/sno-mongo-ku/commit/07e26611221911e5bc6375018dcb2715a64a9cbc))
+
+
+
 ## [2.4.7](https://github.com/snomiao/sno-mongo-ku/compare/v2.4.6...v2.4.7) (2021-03-11)
 
 
