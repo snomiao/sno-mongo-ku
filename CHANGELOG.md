@@ -1,3 +1,17 @@
+## [2.4.7](https://github.com/snomiao/sno-mongo-ku/compare/v2.4.6...v2.4.7) (2021-03-11)
+
+
+### Bug Fixes
+
+* 删除 rootDir 配置 ([527e1da](https://github.com/snomiao/sno-mongo-ku/commit/527e1da661a9989f2b2f60f9bff0b2353438922f))
+
+
+### Features
+
+* 完善类型导出、并加入测试用例 ([9bad550](https://github.com/snomiao/sno-mongo-ku/commit/9bad550be20622ce59f692333d8e4eeae28d8ca4))
+
+
+
 ## [2.4.6](https://github.com/snomiao/sno-mongo-ku/compare/v2.4.5...v2.4.6) (2021-03-11)
 
 
