@@ -1,6 +1,8 @@
-# snoMongoKu
+# snoMongoKu （雪芒）
 
-a wrapper to mongodb driver, provide simple method in chinese to handle the mongodb.
+sno-mongo-ku (雪芒) is a wrapper to official mongodb driver, provide simple method in chinese to handle the mongodb.
+Provide db.$collectionName.$method() rather than the official db.collection('$collectionName').$method().
+
 
 Just have fun with chinese programming ~
 
@@ -15,53 +17,49 @@ These examples have the same purpose:
 2. insert a log
 3. print it out.
 
-```typescript
+```javascript
 import snoMongoKu from 'sno-mongo-ku'
-; (async()=>{
-    const db = await snoMongoKu('mongodb://localhost:27017/test-snomongoku')
-    await db.logs.drop()
-    await db.logs.insertOne({ createdAt: new Date(), content: 'test/(20210304)' })
-    console.table( await db.logs.find().toArray() )
-    // await db._client.close() // optional
-})()
+const db = await snoMongoKu('mongodb://localhost:27017/test-snomongoku')
+await db.logs.drop()
+await db.logs.insertOne({ createdAt: new Date(), content: 'test/(20210304)' })
+console.table( await db.logs.find().toArray() )
+await db._client.close() // optional
 ```
 
-```typescript
+```javascript
 import snoMongoKu from 'sno-mongo-ku'
-; (async()=>{
-    const db = await snoMongoKu('mongodb://localhost:27017/测试-雪芒果库')
-    await db.日志.销毁()
-    await db.日志.单增({ 创建于: new Date(), 内容: '测试/(20210304)' })
-    console.table( await db.日志.多查列() )
-    // await db._client.close() // optional
-})()
+const db = await snoMongoKu('mongodb://localhost:27017/测试-雪芒果库')
+await db.日志.销毁()
+await db.日志.单增({ 创建于: new Date(), 内容: '测试/(20210304)' })
+console.table( await db.日志.多查列() )
+await db._client.close() // optional
 ```
 
 ### 2. upsert
 
-```typescript
+```javascript
 import snoMongoKu from 'sno-mongo-ku'
 const db = await snoMongoKu('mongodb://localhost:27017/test-snomongoku')
 await db.logs.drop()
 await db.logs.upsertOne({_id: 'test', createdAt: new Date(), content: 'test/(20210304)' })
 console.table( await db.logs.find().toArray() )
-// await db._client.close() // optional
+await db._client.close() // optional
 
 ```
 
-```typescript
+```javascript
 import snoMongoKu from 'sno-mongo-ku'
 const db = await snoMongoKu('mongodb://localhost:27017/测试-雪芒果库')
 await db.日志.销毁()
 await db.日志.单增改({_id: 'test', 创建于: new Date(), 内容: '测试/(20210304)' })
 console.table( await db.日志.多查列() )
-// await db._client.close() // optional
+await db._client.close() // optional
 
 ```
 
 ### 3. 并行各改
 
-```typescript
+```javascript
 import snoMongoKu from 'sno-mongo-ku'
 const db = await snoMongoKu('mongodb://localhost:27017/测试-雪芒果库')
 await db.日志.并行各改((日志)=>({$inc: 1}), {$match: {}})
@@ -79,6 +77,7 @@ Methods: `单增 单删 单改 单查 单查替 单查改 单查删 单补 单�
 
 Just like this:
 ![ctrl+space](docs/img/ctrl+space.png)
+
 ## ref
 
 - [自动化发布npm包及生成Github Changelog]( https://banyudu.com/posts/auto_publish_npm_and_generate_github_changelog.882513 )
