@@ -15,6 +15,7 @@
     "removeComments": true
   },
   "exclude": [
+    "./dist/**/",
     "./test/**/*.ts"
   ]
 }

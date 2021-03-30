@@ -9,12 +9,11 @@ import PQueue from 'p-queue';
 
 // ref https://zhuanlan.zhihu.com/p/59434318
 const 返回值类型获取 = <T>(_需推断函数: (_: any) => T): T => ({} as T)
-
 const 合集增强虚拟返回值 = 返回值类型获取(合集增强);
 type 增强合集 = typeof 合集增强虚拟返回值;
 
 const 雪芒果库虚拟返回值 = 返回值类型获取(snoMongoKu);
-type snoMongoKuPromise = typeof 雪芒果库虚拟返回值;
+// type snoMongoKuPromise = typeof 雪芒果库虚拟返回值;
 
 interface snoMongoKuRaw extends mongodb.Db { _client: mongodb.MongoClient; }
 interface snoMongoKuEnhanced { [k: string]: 增强合集; }
@@ -63,6 +62,37 @@ function 合集增强(合集: mongodb.Collection) {
         名称: 合集.collectionName,
         去重: 合集.distinct,
         销毁: 合集.drop,
+        并行聚合更新: async (
+            pipeline: {
+                $match?: FilterQuery<any>; $sample?: { size: number; };
+                $limit?: number; $sort?: any; $project?: any;
+            }[],
+            更新函数: (doc: any, index: number) => Promise<UpdateQuery<any> | void> | UpdateQuery<any> | void,
+            { 并行数 = 1, 止于错 = true, 错误输出 = true } = {}
+        ) => {
+            let index = 0
+            const q = new PQueue({ concurrency: 并行数 });
+            const 错误列 = [];
+            for await (const doc of 合集.aggregate(pipeline)) {
+                if (!doc._id) throw new TypeError('doc._id is required');
+                await q.onEmpty(); q.add(async () => {
+                    try {
+                        const UpdateQuery = await 更新函数(doc, index)
+                        UpdateQuery && await 合集.updateOne({ _id: doc._id }, UpdateQuery);
+                    } catch (err) {
+                        if (止于错) throw err;
+                        else 错误列.push(err);
+                    }
+                });
+                index++;
+            }
+            await q.onIdle();
+            if (错误列.length) {
+                错误输出 && console.error(错误列)
+                throw AggregateError(错误列)
+            }
+            return index;
+        },
         并行各改: async (
             func: (doc: any, index: number, count: number) => Promise<UpdateQuery<any> | void> | UpdateQuery<any> | void,
             { $match, $sample, $limit, $sort, $project }: {
@@ -98,7 +128,7 @@ function 合集增强(合集: mongodb.Collection) {
                 错误输出 && console.error(错误列)
                 throw AggregateError(错误列)
             }
-            return count;
+            return index;
         }
-    });
+    })
 }

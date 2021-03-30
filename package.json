@@ -19,7 +19,8 @@
   },
   "scripts": {
     "build": "tsc",
-    "build:publish": "npm run build && npm version patch",
+    "build:patch": "npm run build && npm version patch",
+    "build:minor": "npm run build && npm version minor",
     "watch": "tsc --watch",
     "test": "ts-node .",
     "version": "conventional-changelog -p angular -i CHANGELOG.md -s && git add CHANGELOG.md",
