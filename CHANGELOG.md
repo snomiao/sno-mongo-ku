@@ -1,3 +1,12 @@
+# [2.5.0](https://github.com/snomiao/sno-mongo-ku/compare/v2.4.8...v2.5.0) (2021-03-30)
+
+
+### Features
+
+* 并行聚合更新 ([c6a10cf](https://github.com/snomiao/sno-mongo-ku/commit/c6a10cf5154e405b5b73c3efe43b4f6fbcfa59d9))
+
+
+
 ## [2.4.8](https://github.com/snomiao/sno-mongo-ku/compare/v2.4.7...v2.4.8) (2021-03-11)
 
 
