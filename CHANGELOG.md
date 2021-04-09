@@ -1,3 +1,12 @@
+## [2.5.2](https://github.com/snomiao/sno-mongo-ku/compare/v2.5.1...v2.5.2) (2021-04-09)
+
+
+### Bug Fixes
+
+* 增加英文写法的并行聚合更新 ([0a48719](https://github.com/snomiao/sno-mongo-ku/commit/0a487198f8bad560e5fbf67b05e9b07327dce22d))
+
+
+
 ## [2.5.1](https://github.com/snomiao/sno-mongo-ku/compare/v2.5.0...v2.5.1) (2021-04-09)
 
 
