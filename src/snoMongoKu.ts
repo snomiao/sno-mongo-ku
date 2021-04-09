@@ -100,6 +100,44 @@ function 合集增强(合集: mongodb.Collection) {
             }
             return index;
         },
+        /**
+         * 英文写法的并行聚合更新，常用于合集扫描操作，
+         * @param pipeline MongoDB 标准聚合 pipeline。
+         * @param 更新函数，接受参数：扫描到的文档 doc、当前序号 index，如需更新，则返回一个 updateOne 中的更新操作，否则请返回 null 表示不需要更新。
+         * @returns 若没有错误发生，则返回成功扫描的数量。
+         */
+        parallelAggregateUpdate: async (
+            pipeline: {
+                $match?: FilterQuery<any>; $sample?: { size: number; };
+                $limit?: number; $sort?: any; $project?: any;
+                [k: string]: any
+            }[],
+            更新函数: (doc: any, index: number) => Promise<UpdateQuery<any> | void> | UpdateQuery<any> | void,
+            { concurrency = 1, stopOnErrors = true, showErrors = true } = {}
+        ) => {
+            let index = 0
+            const q = new PQueue({ concurrency: concurrency });
+            const 错误列 = [];
+            for await (const doc of 合集.aggregate(pipeline)) {
+                if (!doc._id) throw new TypeError('doc._id is required');
+                await q.onEmpty(); q.add(async () => {
+                    try {
+                        const UpdateQuery = await 更新函数(doc, index)
+                        UpdateQuery && await 合集.updateOne({ _id: doc._id }, UpdateQuery);
+                    } catch (err) {
+                        if (stopOnErrors) throw err;
+                        else 错误列.push(err);
+                    }
+                });
+                index++;
+            }
+            await q.onIdle();
+            if (错误列.length) {
+                showErrors && console.error(错误列)
+                throw AggregateError(错误列)
+            }
+            return index;
+        },
         并行各改: async (
             func: (doc: any, index: number, count: number) => Promise<UpdateQuery<any> | void> | UpdateQuery<any> | void,
             { $match, $sample, $limit, $sort, $project }: {
