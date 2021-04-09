@@ -62,10 +62,17 @@ function 合集增强(合集: mongodb.Collection) {
         名称: 合集.collectionName,
         去重: 合集.distinct,
         销毁: 合集.drop,
+        /**
+         * 并行聚合更新，常用于合集扫描操作，
+         * @param pipeline MongoDB 标准聚合 pipeline。
+         * @param 更新函数，接受参数：扫描到的文档 doc、当前序号 index，如需更新，则返回一个 updateOne 中的更新操作，否则请返回 null 表示不需要更新。
+         * @returns 若没有错误发生，则返回成功扫描的数量。
+         */
         并行聚合更新: async (
             pipeline: {
                 $match?: FilterQuery<any>; $sample?: { size: number; };
                 $limit?: number; $sort?: any; $project?: any;
+                [k: string]: any
             }[],
             更新函数: (doc: any, index: number) => Promise<UpdateQuery<any> | void> | UpdateQuery<any> | void,
             { 并行数 = 1, 止于错 = true, 错误输出 = true } = {}
