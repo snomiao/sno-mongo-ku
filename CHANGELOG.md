@@ -1,3 +1,12 @@
+## [2.5.1](https://github.com/snomiao/sno-mongo-ku/compare/v2.5.0...v2.5.1) (2021-04-09)
+
+
+### Bug Fixes
+
+* 兼容其它类型的 pipeline，并提供文档 ([9c5b35f](https://github.com/snomiao/sno-mongo-ku/commit/9c5b35f31d9c2c257d909f364782c97c2c1563f1))
+
+
+
 # [2.5.0](https://github.com/snomiao/sno-mongo-ku/compare/v2.4.8...v2.5.0) (2021-03-30)
 
 
