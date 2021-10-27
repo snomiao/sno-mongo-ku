@@ -41,9 +41,15 @@ type 表 = { _id?: mongodb.ObjectID | any; [x: string]: any };
 function 合集增强(合集: mongodb.Collection) {
     return Object.assign(合集, {
         单增: 合集.insertOne,
-        单删: 合集.deleteOne,
+        单删: async (
+            查询表: mongodb.FilterQuery<any> = {},
+            选项?: mongodb.CommonOptions
+        ) => await 合集.deleteOne(查询表, 选项),
         单改: 合集.updateOne,
-        单查: 合集.findOne,
+        单查: async (
+            查询表: mongodb.FilterQuery<any> = {},
+            选项?: mongodb.FindOneOptions<any>
+        ) => await 合集.findOne(查询表, 选项),
         单查替: 合集.findOneAndReplace,
         单查改: 合集.findOneAndUpdate,
         单查删: 合集.findOneAndDelete,
@@ -161,9 +167,9 @@ function 合集增强(合集: mongodb.Collection) {
                                 .updateOne({ _id: doc._id }, UpdateQuery)
                                 .catch((e) => {
                                     throw new Error(
-                                        `错误：在${
+                                        `错误：在合集 ${
                                             合集.collectionName
-                                        }尝试更新错误: ${JSON.stringify(
+                                        } 尝试更新错误: ${JSON.stringify(
                                             UpdateQuery
                                         )}, 具体错误内容${e.message}`
                                     );
@@ -185,6 +191,7 @@ function 合集增强(合集: mongodb.Collection) {
         },
         /**
          * 英文写法的并行聚合更新，常用于合集扫描操作，
+         * @deprecated
          * @param pipeline MongoDB 标准聚合 pipeline。
          * @param 更新函数，接受参数：扫描到的文档 doc、当前序号 index，如需更新，则返回一个 updateOne 中的更新操作，否则请返回 null 表示不需要更新。
          * @returns 若没有错误发生，则返回成功扫描的数量。
@@ -232,6 +239,9 @@ function 合集增强(合集: mongodb.Collection) {
             }
             return index;
         },
+        /**
+         * @deprecated
+         */
         并行各改: async (
             func: (
                 doc: any,
