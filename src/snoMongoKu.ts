@@ -6,6 +6,7 @@
 import mongodb, {
     FilterQuery,
     ProjectionOperators,
+    SortOptionObject,
     UpdateOneOptions,
     UpdateQuery,
 } from "mongodb";
@@ -134,18 +135,26 @@ const _合集增强表 = (合集: mongodb.Collection) => ({
     销毁: 合集.drop,
     扫描更新: async (
         {
-            $match,
-            $project = null,
-        }: { $match: FilterQuery<any>; $project: ProjectionOperators },
+            $match ={},
+            $project,
+            $limit,
+            $sort
+        }: {
+            $match?: FilterQuery<any>;
+            $limit?: number;
+            $sort?: SortOptionObject<any>;
+            $project?: ProjectionOperators;
+            [k: string]: any;
+        },
         更新函数: (
             doc: any,
             index?: number,
             count?: number
         ) => Promise<UpdateQuery<any> | void> | UpdateQuery<any> | void
     ) => {
-        const count = await 合集.estimatedDocumentCount($match);
+        const count = await 合集.estimatedDocumentCount($match );
         let index = 0;
-        for await (const doc of 合集.find($match, { projection: $project })) {
+        for await (const doc of 合集.find($match, { projection: $project, limit: $limit, sort: $sort})) {
             const UpdateQuery = await 更新函数(doc, index++, count);
             if (!UpdateQuery) continue;
             await 合集.updateOne({ _id: doc._id }, UpdateQuery);
