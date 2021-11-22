@@ -1,3 +1,12 @@
+## [2.5.5](https://github.com/snomiao/sno-mongo-ku/compare/v2.5.4...v2.5.5) (2021-11-22)
+
+
+### Bug Fixes
+
+* github-action test ([20be558](https://github.com/snomiao/sno-mongo-ku/commit/20be558194eb285eaf875a9b137005f963716dfe))
+
+
+
 ## [2.5.4](https://github.com/snomiao/sno-mongo-ku/compare/v2.5.3...v2.5.4) (2021-10-27)
 
 
