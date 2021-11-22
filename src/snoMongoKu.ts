@@ -3,10 +3,14 @@
  * author: YiDong Zhuo(snomiao@gmail.com)
  */
 
-import mongodb, { FilterQuery, UpdateOneOptions, UpdateQuery } from "mongodb";
-import { type } from "os";
+import mongodb, {
+    FilterQuery,
+    ProjectionOperators,
+    UpdateOneOptions,
+    UpdateQuery,
+} from "mongodb";
 import PQueue from "p-queue";
-
+// import "sno-utils";
 // ref https://zhuanlan.zhihu.com/p/59434318
 const 返回值类型获取 = <T>(_需推断函数: (_: any) => T): T => ({} as T);
 const 合集增强虚拟返回值 = 返回值类型获取(合集增强);
@@ -23,7 +27,7 @@ interface snoMongoKuEnhanced {
 }
 // interface snoMongoKu extends snoMongoKuRaw, snoMongoKuEnhanced { }
 type snoMongoKu = snoMongoKuRaw & snoMongoKuEnhanced;
-export = snoMongoKu;
+export default snoMongoKu;
 async function snoMongoKu(uri: string): Promise<snoMongoKu> {
     const client = await mongodb.connect(uri, {
         useNewUrlParser: true,
@@ -39,7 +43,7 @@ async function snoMongoKu(uri: string): Promise<snoMongoKu> {
 
 type 表 = { _id?: mongodb.ObjectID | any; [x: string]: any };
 
-const  _合集增强表 = (合集: mongodb.Collection) =>({
+const _合集增强表 = (合集: mongodb.Collection) => ({
     单增: 合集.insertOne,
     单删: async (
         查询表: mongodb.FilterQuery<any> = {},
@@ -53,11 +57,7 @@ const  _合集增强表 = (合集: mongodb.Collection) =>({
     单查替: 合集.findOneAndReplace,
     单查改: 合集.findOneAndUpdate,
     单查删: 合集.findOneAndDelete,
-    单补: (
-        表: 表,
-        索引: 表 = { _id: 1 },
-        选项?: mongodb.UpdateOneOptions
-    ) =>
+    单补: (表: 表, 索引: 表 = { _id: 1 }, 选项?: mongodb.UpdateOneOptions) =>
         合集.updateOne(
             Object.fromEntries(Object.keys(索引).map((键) => [键, 表[键]])),
             { $set: 表 },
@@ -132,7 +132,25 @@ const  _合集增强表 = (合集: mongodb.Collection) =>({
     名称: 合集.collectionName,
     去重: 合集.distinct,
     销毁: 合集.drop,
-    
+    扫描更新: async (
+        {
+            $match,
+            $project = null,
+        }: { $match: FilterQuery<any>; $project: ProjectionOperators },
+        更新函数: (
+            doc: any,
+            index?: number,
+            count?: number
+        ) => Promise<UpdateQuery<any> | void> | UpdateQuery<any> | void
+    ) => {
+        const count = await 合集.estimatedDocumentCount($match);
+        let index = 0;
+        for await (const doc of 合集.find($match, { projection: $project })) {
+            const UpdateQuery = await 更新函数(doc, index++, count);
+            if (!UpdateQuery) continue;
+            await 合集.updateOne({ _id: doc._id }, UpdateQuery);
+        }
+    },
     /**
      * 并行聚合更新，常用于合集扫描操作，
      * @param pipeline MongoDB 标准聚合 pipeline。
@@ -222,10 +240,7 @@ const  _合集增强表 = (合集: mongodb.Collection) =>({
                 try {
                     const UpdateQuery = await 更新函数(doc, index);
                     UpdateQuery &&
-                        (await 合集.updateOne(
-                            { _id: doc._id },
-                            UpdateQuery
-                        ));
+                        (await 合集.updateOne({ _id: doc._id }, UpdateQuery));
                 } catch (err) {
                     if (stopOnErrors) throw err;
                     else 错误列.push(err);
@@ -283,10 +298,7 @@ const  _合集增强表 = (合集: mongodb.Collection) =>({
                 try {
                     const UpdateQuery = await func(doc, index, count);
                     UpdateQuery &&
-                        (await 合集.updateOne(
-                            { _id: doc._id },
-                            UpdateQuery
-                        ));
+                        (await 合集.updateOne({ _id: doc._id }, UpdateQuery));
                 } catch (err) {
                     if (止于错) throw err;
                     else 错误列.push(err);
@@ -301,7 +313,7 @@ const  _合集增强表 = (合集: mongodb.Collection) =>({
         }
         return index;
     },
-})
+});
 
 function 合集增强(合集: mongodb.Collection) {
     return Object.assign(合集, _合集增强表(合集));
