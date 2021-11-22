@@ -1,3 +1,12 @@
+## [2.5.6](https://github.com/snomiao/sno-mongo-ku/compare/v2.5.5...v2.5.6) (2021-11-22)
+
+
+### Bug Fixes
+
+* 扫描更新 ([97c8e72](https://github.com/snomiao/sno-mongo-ku/commit/97c8e722f4fc31469b1e8189aa4632aa5e0b0da9))
+
+
+
 ## [2.5.5](https://github.com/snomiao/sno-mongo-ku/compare/v2.5.4...v2.5.5) (2021-11-22)
 
 
