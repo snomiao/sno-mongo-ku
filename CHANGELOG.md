@@ -1,3 +1,12 @@
+## [2.6.4](https://github.com/snomiao/sno-mongo-ku/compare/v2.6.3...v2.6.4) (2021-12-01)
+
+
+### Bug Fixes
+
+* declaration dir fix ([0462681](https://github.com/snomiao/sno-mongo-ku/commit/0462681160f4e54e6c84c3a2107d3be6f0f34b53))
+
+
+
 ## [2.6.3](https://github.com/snomiao/sno-mongo-ku/compare/v2.6.2...v2.6.3) (2021-12-01)
 
 
