@@ -1,3 +1,12 @@
+# [2.6.0](https://github.com/snomiao/sno-mongo-ku/compare/v2.5.6...v2.6.0) (2021-12-01)
+
+
+### Features
+
+* 早于 ([4e99cba](https://github.com/snomiao/sno-mongo-ku/commit/4e99cbaeee342867fe6461a0cf36ed94240167b5))
+
+
+
 ## [2.5.6](https://github.com/snomiao/sno-mongo-ku/compare/v2.5.5...v2.5.6) (2021-11-22)
 
 
