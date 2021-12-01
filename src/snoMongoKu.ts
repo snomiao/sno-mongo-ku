@@ -28,8 +28,7 @@ interface snoMongoKuEnhanced {
 }
 // interface snoMongoKu extends snoMongoKuRaw, snoMongoKuEnhanced { }
 type snoMongoKu = snoMongoKuRaw & snoMongoKuEnhanced;
-export default snoMongoKu;
-async function snoMongoKu(uri: string): Promise<snoMongoKu> {
+export default async function snoMongoKu(uri: string): Promise<snoMongoKu> {
     const client = await mongodb.connect(uri, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
