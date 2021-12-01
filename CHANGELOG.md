@@ -1,3 +1,12 @@
+## [2.6.3](https://github.com/snomiao/sno-mongo-ku/compare/v2.6.2...v2.6.3) (2021-12-01)
+
+
+### Bug Fixes
+
+* export default ([cb1dcc7](https://github.com/snomiao/sno-mongo-ku/commit/cb1dcc72a42e7f036692d92725752371cdd760ff))
+
+
+
 ## [2.6.2](https://github.com/snomiao/sno-mongo-ku/compare/v2.6.1...v2.6.2) (2021-12-01)
 
 
