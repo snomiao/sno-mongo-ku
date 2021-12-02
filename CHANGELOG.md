@@ -1,3 +1,12 @@
+## [2.6.5](https://github.com/snomiao/sno-mongo-ku/compare/v2.6.4...v2.6.5) (2021-12-02)
+
+
+### Bug Fixes
+
+* error handle of 补表 ([d2aedcf](https://github.com/snomiao/sno-mongo-ku/commit/d2aedcf7e5950956ccf374fe343cccf8660f9b6e))
+
+
+
 ## [2.6.4](https://github.com/snomiao/sno-mongo-ku/compare/v2.6.3...v2.6.4) (2021-12-01)
 
 
