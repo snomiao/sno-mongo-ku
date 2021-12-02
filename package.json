@@ -5,7 +5,13 @@
     "lib": "./lib/snoMongoKu.js",
     "main": "./dist/snoMongoKu.js",
     "module": "./dist/snoMongoKu.mjs",
-    "exports": "./dist/snoMongoKu.mjs",
+    "exports_ref": "[Hybrid npm packages (ESM and CommonJS)]( https://2ality.com/2019/10/hybrid-npm-packages.html )",
+    "exports": {
+        ".": {
+            "require": "./dist/snoMongoKu.js",
+            "default": "./dist/snoMongoKu.mjs"
+        }
+    },
     "types": "./dist/snoMongoKu.d.ts",
     "_type": "module",
     "devDependencies": {
