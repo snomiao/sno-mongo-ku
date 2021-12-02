@@ -54,15 +54,26 @@ const _合集增强表 = (合集: mongodb.Collection) => ({
         查询表: mongodb.FilterQuery<any> = {},
         选项?: mongodb.FindOneOptions<any>
     ) => await 合集.findOne(查询表, 选项),
+    /** @deprecated */
     单查替: 合集.findOneAndReplace,
+    /** @deprecated */
     单查改: 合集.findOneAndUpdate,
+    /** @deprecated */
     单查删: 合集.findOneAndDelete,
-    单补: (表: 表, 索引: 表 = { _id: 1 }, 选项?: mongodb.UpdateOneOptions) =>
-        合集.updateOne(
-            Object.fromEntries(Object.keys(索引).map((键) => [键, 表[键]])),
-            { $set: 表 },
+    单补: async (
+        补表: 表,
+        索引: 表 = { _id: 1 },
+        选项?: mongodb.UpdateOneOptions
+    ) => {
+        const 索引键存在 = (键名: string) => Object.keys(补表).includes(键名);
+        const 索引键全部存在 = Object.keys(索引).every(索引键存在);
+        if (!索引键全部存在) throw new Error("错误：补表对应索引键不完整");
+        return await 合集.updateOne(
+            Object.fromEntries(Object.keys(索引).map((键) => [键, 补表[键]])),
+            { $set: 补表 },
             { upsert: true, ...选项 }
-        ),
+        );
+    },
     单增改: ((查询: any, 更新: any, options: any, cb?: any) =>
         合集.updateOne(
             查询,
@@ -95,15 +106,24 @@ const _合集增强表 = (合集: mongodb.Collection) => ({
         选项?: mongodb.CollectionBulkWriteOptions
     ) =>
         合集.bulkWrite(
-            表列.map((表: 表) => ({
-                updateOne: {
-                    filter: Object.fromEntries(
-                        Object.keys(索引).map((键) => [键, 表[键]])
-                    ),
-                    update: { $set: 表 },
-                    upsert: true,
-                },
-            })),
+            表列.map((补表: 表) => {
+                // 补表索引检查
+                const 索引键存在 = (键名: string) =>
+                    Object.keys(补表).includes(键名);
+                const 索引键全部存在 = Object.keys(索引).every(索引键存在);
+                if (!索引键全部存在)
+                    throw new Error("错误：补表对应索引键不完整");
+                const filter = Object.fromEntries(
+                    Object.keys(索引).map((键) => [键, 补表[键]])
+                );
+                return {
+                    updateOne: {
+                        filter,
+                        update: { $set: 补表 },
+                        upsert: true,
+                    },
+                };
+            }),
             选项
         ),
     多增改: ((查询: any, 更新: any, options: any, cb?: any) =>
