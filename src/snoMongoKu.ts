@@ -171,13 +171,14 @@ const _合集增强表 = (合集: mongodb.Collection) => ({
             count?: number
         ) => Promise<UpdateQuery<any> | void> | UpdateQuery<any> | void
     ) => {
-        const count = await 合集.estimatedDocumentCount($match);
-        let index = 0;
-        for await (const doc of 合集.find($match, {
+        const cursor = 合集.find($match, {
             projection: $project,
             limit: $limit,
             sort: $sort,
-        })) {
+        });
+        const count = await cursor.count()
+        let index = 0;
+        for await (const doc of cursor) {
             const UpdateQuery = await 更新函数(doc, index++, count);
             if (!UpdateQuery) continue;
             await 合集.updateOne({ _id: doc._id }, UpdateQuery);
