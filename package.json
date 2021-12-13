@@ -1,6 +1,6 @@
 {
     "name": "sno-mongo-ku",
-    "version": "2.6.7",
+    "version": "2.6.8",
     "description": "MongoDB simple wrapper, Provide simple method in chinese to handle the mongodb.",
     "lib": "./lib/snoMongoKu.js",
     "main": "./dist/snoMongoKu.js",
