@@ -1,3 +1,12 @@
+## [2.6.9](https://github.com/snomiao/sno-mongo-ku/compare/v2.6.8...v2.6.9) (2021-12-29)
+
+
+### Bug Fixes
+
+* $match is required ([59acd6b](https://github.com/snomiao/sno-mongo-ku/commit/59acd6bd32e6c52693ce470c7b7c12b5e1aa52ab))
+
+
+
 ## [2.6.8](https://github.com/snomiao/sno-mongo-ku/compare/v2.6.7...v2.6.8) (2021-12-13)
 
 
