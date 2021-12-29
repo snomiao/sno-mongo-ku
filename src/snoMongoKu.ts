@@ -154,12 +154,12 @@ const _合集增强表 = (合集: mongodb.Collection) => ({
     销毁: 合集.drop,
     扫描更新: async (
         {
-            $match = {},
+            $match,
             $project,
             $limit,
             $sort,
         }: {
-            $match?: FilterQuery<any>;
+            $match: FilterQuery<any>;
             $limit?: number;
             $sort?: SortOptionObject<any>;
             $project?: ProjectionOperators;
