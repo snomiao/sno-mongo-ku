@@ -4,11 +4,11 @@
  */
 
 import mongodb, {
-    FilterQuery,
-    ProjectionOperators,
-    SortOptionObject,
-    UpdateOneOptions,
-    UpdateQuery,
+    FilterOperations,
+    UpdateOptions,
+    UpdateFilter,
+    Sort,
+    MongoClient,
 } from "mongodb";
 import PQueue from "p-queue";
 // import "sno-utils";
@@ -29,10 +29,8 @@ interface snoMongoKuEnhanced {
 // interface snoMongoKu extends snoMongoKuRaw, snoMongoKuEnhanced { }
 type snoMongoKu = snoMongoKuRaw & snoMongoKuEnhanced;
 export default async function snoMongoKu(uri: string): Promise<snoMongoKu> {
-    const client = await mongodb.connect(uri, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-    });
+    const client = new MongoClient(uri);
+    await client.connect();
     return new Proxy(client.db(), {
         get: (t: any, p) =>
             p === "_client"
@@ -41,18 +39,18 @@ export default async function snoMongoKu(uri: string): Promise<snoMongoKu> {
     });
 }
 
-type 表 = { _id?: mongodb.ObjectID | any; [x: string]: any };
+type 表 = { _id?: mongodb.ObjectId | any; [x: string]: any };
 
 const _合集增强表 = (合集: mongodb.Collection) => ({
     单增: 合集.insertOne,
     单删: async (
-        查询表: mongodb.FilterQuery<any> = {},
-        选项?: mongodb.CommonOptions
+        查询表: mongodb.FilterOperations<any> = {},
+        选项?: mongodb.DeleteOptions
     ) => await 合集.deleteOne(查询表, 选项),
     单改: 合集.updateOne,
     单查: async (
-        查询表: mongodb.FilterQuery<any> = {},
-        选项?: mongodb.FindOneOptions<any>
+        查询表: mongodb.FilterOperations<any> = {},
+        选项?: mongodb.FindOptions<any>
     ) => await 合集.findOne(查询表, 选项),
     /** @deprecated */
     单查替: 合集.findOneAndReplace,
@@ -63,7 +61,7 @@ const _合集增强表 = (合集: mongodb.Collection) => ({
     单补: async (
         补表: 表,
         索引: 表 = { _id: 1 },
-        选项?: mongodb.UpdateOneOptions
+        选项?: mongodb.UpdateOptions
     ) => {
         const 索引键存在 = (键名: string) => Object.keys(补表).includes(键名);
         const 索引键全部存在 = Object.keys(索引).every(索引键存在);
@@ -93,17 +91,17 @@ const _合集增强表 = (合集: mongodb.Collection) => ({
     多改: 合集.updateMany,
     多查: 合集.find,
     多查数: (
-        查询表: mongodb.FilterQuery<any> = {},
-        选项?: mongodb.FindOneOptions<any>
+        查询表: mongodb.FilterOperations<any> = {},
+        选项?: mongodb.FindOptions<any>
     ) => 合集.find(查询表, 选项).count(),
     多查列: (
-        查询表: mongodb.FilterQuery<any> = {},
-        选项?: mongodb.FindOneOptions<any>
+        查询表: mongodb.FilterOperations<any> = {},
+        选项?: mongodb.FindOptions<any>
     ) => 合集.find(查询表, 选项).toArray(),
     多补: (
         表列: 表[],
         索引: 表 = { _id: 1 },
-        选项?: mongodb.CollectionBulkWriteOptions
+        选项?: mongodb.BulkWriteOptions
     ) =>
         合集.bulkWrite(
             表列.map((补表: 表) => {
@@ -159,29 +157,29 @@ const _合集增强表 = (合集: mongodb.Collection) => ({
             $limit,
             $sort,
         }: {
-            $match: FilterQuery<any>;
+            $match: FilterOperations<any>;
             $limit?: number;
-            $sort?: SortOptionObject<any>;
-            $project?: ProjectionOperators;
+            $sort?: Sort;
+            $project?: any;
             [k: string]: any;
         },
         更新函数: (
             doc: any,
             index?: number,
             count?: number
-        ) => Promise<UpdateQuery<any> | void> | UpdateQuery<any> | void
+        ) => Promise<UpdateFilter<any> | void> | UpdateFilter<any> | void
     ) => {
         const cursor = 合集.find($match, {
             projection: $project,
             limit: $limit,
             sort: $sort,
         });
-        const count = await cursor.count()
+        const count = await cursor.count();
         let index = 0;
         for await (const doc of cursor) {
-            const UpdateQuery = await 更新函数(doc, index++, count);
-            if (!UpdateQuery) continue;
-            await 合集.updateOne({ _id: doc._id }, UpdateQuery);
+            const UpdateFilter = await 更新函数(doc, index++, count);
+            if (!UpdateFilter) continue;
+            await 合集.updateOne({ _id: doc._id }, UpdateFilter);
         }
     },
     /**
@@ -192,7 +190,7 @@ const _合集增强表 = (合集: mongodb.Collection) => ({
      */
     并行聚合更新: async (
         pipeline: {
-            $match?: FilterQuery<any>;
+            $match?: FilterOperations<any>;
             $sample?: { size: number };
             $limit?: number;
             $sort?: any;
@@ -202,7 +200,7 @@ const _合集增强表 = (合集: mongodb.Collection) => ({
         更新函数: (
             doc: any,
             index: number
-        ) => Promise<UpdateQuery<any> | void> | UpdateQuery<any> | void,
+        ) => Promise<UpdateFilter<any> | void> | UpdateFilter<any> | void,
         { 并行数 = 1, 止于错 = true, 错误输出 = true } = {}
     ) => {
         let index = 0;
@@ -213,16 +211,16 @@ const _合集增强表 = (合集: mongodb.Collection) => ({
             await q.onEmpty();
             q.add(async () => {
                 try {
-                    const UpdateQuery = await 更新函数(doc, index);
-                    UpdateQuery &&
+                    const UpdateFilter = await 更新函数(doc, index);
+                    UpdateFilter &&
                         (await 合集
-                            .updateOne({ _id: doc._id }, UpdateQuery)
+                            .updateOne({ _id: doc._id }, UpdateFilter)
                             .catch((e) => {
                                 throw new Error(
                                     `错误：在合集 ${
                                         合集.collectionName
                                     } 尝试更新错误: ${JSON.stringify(
-                                        UpdateQuery
+                                        UpdateFilter
                                     )}, 具体错误内容${e.message}`
                                 );
                                 // throw e;
@@ -250,7 +248,7 @@ const _合集增强表 = (合集: mongodb.Collection) => ({
      */
     parallelAggregateUpdate: async (
         pipeline: {
-            $match?: FilterQuery<any>;
+            $match?: FilterOperations<any>;
             $sample?: { size: number };
             $limit?: number;
             $sort?: any;
@@ -260,7 +258,7 @@ const _合集增强表 = (合集: mongodb.Collection) => ({
         更新函数: (
             doc: any,
             index: number
-        ) => Promise<UpdateQuery<any> | void> | UpdateQuery<any> | void,
+        ) => Promise<UpdateFilter<any> | void> | UpdateFilter<any> | void,
         { concurrency = 1, stopOnErrors = true, showErrors = true } = {}
     ) => {
         let index = 0;
@@ -271,9 +269,9 @@ const _合集增强表 = (合集: mongodb.Collection) => ({
             await q.onEmpty();
             q.add(async () => {
                 try {
-                    const UpdateQuery = await 更新函数(doc, index);
-                    UpdateQuery &&
-                        (await 合集.updateOne({ _id: doc._id }, UpdateQuery));
+                    const UpdateFilter = await 更新函数(doc, index);
+                    UpdateFilter &&
+                        (await 合集.updateOne({ _id: doc._id }, UpdateFilter));
                 } catch (err) {
                     if (stopOnErrors) throw err;
                     else 错误列.push(err);
@@ -296,7 +294,7 @@ const _合集增强表 = (合集: mongodb.Collection) => ({
             doc: any,
             index: number,
             count: number
-        ) => Promise<UpdateQuery<any> | void> | UpdateQuery<any> | void,
+        ) => Promise<UpdateFilter<any> | void> | UpdateFilter<any> | void,
         {
             $match,
             $sample,
@@ -304,7 +302,7 @@ const _合集增强表 = (合集: mongodb.Collection) => ({
             $sort,
             $project,
         }: {
-            $match?: FilterQuery<any>;
+            $match?: FilterOperations<any>;
             $sample?: { size: number };
             $limit?: number;
             $sort?: any;
@@ -329,9 +327,9 @@ const _合集增强表 = (合集: mongodb.Collection) => ({
             await q.onEmpty();
             q.add(async () => {
                 try {
-                    const UpdateQuery = await func(doc, index, count);
-                    UpdateQuery &&
-                        (await 合集.updateOne({ _id: doc._id }, UpdateQuery));
+                    const UpdateFilter = await func(doc, index, count);
+                    UpdateFilter &&
+                        (await 合集.updateOne({ _id: doc._id }, UpdateFilter));
                 } catch (err) {
                     if (止于错) throw err;
                     else 错误列.push(err);
