@@ -27,7 +27,7 @@ export interface snoMongoKuEnhanced {
     [k: string]: 增强合集;
 }
 // interface snoMongoKu extends snoMongoKuRaw, snoMongoKuEnhanced { }
-type snoMongoKu = snoMongoKuRaw & snoMongoKuEnhanced;
+export type snoMongoKu = snoMongoKuRaw & snoMongoKuEnhanced;
 export default async function snoMongoKu(uri: string): Promise<snoMongoKu> {
     const client = new MongoClient(uri);
     await client.connect();
