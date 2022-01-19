@@ -3,8 +3,12 @@ export default {
     input: pkg.lib,
     output: [
         {
-            file: pkg.main,
+            file: pkg.cjs,
             format: "cjs",
+        },
+        {
+            file: pkg.main,
+            format: "es",
         },
         {
             file: pkg.module,

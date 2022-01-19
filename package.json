@@ -4,16 +4,17 @@
     "description": "MongoDB simple wrapper, Provide simple method in chinese to handle the mongodb.",
     "lib": "./lib/snoMongoKu.js",
     "main": "./dist/snoMongoKu.js",
+    "cjs": "./dist/snoMongoKu.cjs",
     "module": "./dist/snoMongoKu.mjs",
     "exports_ref": "[Hybrid npm packages (ESM and CommonJS)]( https://2ality.com/2019/10/hybrid-npm-packages.html )",
     "exports": {
         ".": {
-            "require": "./dist/snoMongoKu.js",
+            "require": "./dist/snoMongoKu.cjs",
             "default": "./dist/snoMongoKu.mjs"
         }
     },
     "types": "./dist/snoMongoKu.d.ts",
-    "_type": "module",
+    "type": "module",
     "devDependencies": {
         "@babel/cli": "^7.16.8",
         "@babel/core": "^7.16.7",
@@ -38,6 +39,7 @@
     },
     "scripts": {
         "test": "npm run build && mocha",
+        "mocha": "mocha",
         "build": "npm run build:tsc && npm run build:babel && npm run build:rollup",
         "build:tsc": "tsc",
         "build:babel": "babel src -d lib --extensions .ts",
