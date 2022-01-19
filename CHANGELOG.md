@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.7.0](https://github.com/snomiao/sno-mongo-ku/compare/v2.6.12...v2.7.0) (2022-01-19)
+
+
+### Features
+
+* export interface ([f91f051](https://github.com/snomiao/sno-mongo-ku/commit/f91f051904305e8ff06fa2fd6d71ceeb1d8ebf30))
+
+### [2.6.13](https://github.com/snomiao/sno-mongo-ku/compare/v2.6.12...v2.6.13) (2022-01-19)
+
 ### [2.6.12](https://github.com/snomiao/sno-mongo-ku/compare/v2.6.9...v2.6.12) (2022-01-19)
 
 
