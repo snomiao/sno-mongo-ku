@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.6.12](https://github.com/snomiao/sno-mongo-ku/compare/v2.6.9...v2.6.12) (2022-01-19)
+
+
+### Bug Fixes
+
+* typo ([38f80f9](https://github.com/snomiao/sno-mongo-ku/commit/38f80f9728a6bc808497ab10bc06f288c13ed3b3))
+* upgrade to latest mongodb ([9b05779](https://github.com/snomiao/sno-mongo-ku/commit/9b05779dadf4e074b67cfe4219d2e369f8b8f158))
+
 ### [2.6.11](https://github.com/snomiao/sno-mongo-ku/compare/v2.6.9...v2.6.11) (2022-01-19)
 
 
