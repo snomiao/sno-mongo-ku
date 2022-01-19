@@ -5,7 +5,7 @@ describe("Connect", async function () {
     const { MONGO_URI } = process.env;
     let db;
     before("open", async function () {
-        console.log('connecting to', MONGO_URI)
+        console.log('connecting to ', MONGO_URI)
         db = await snoMongoKu(MONGO_URI);
     });
 
