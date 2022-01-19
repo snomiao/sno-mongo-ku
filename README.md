@@ -3,7 +3,6 @@
 sno-mongo-ku (雪芒) is a wrapper to official mongodb driver, provide simple method in chinese to handle the mongodb.
 Provide db.$collectionName.$method() rather than the official db.collection('$collectionName').$method().
 
-
 Just have fun with chinese programming ~
 
 ## Usage
