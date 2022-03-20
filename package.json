@@ -16,7 +16,7 @@
     "types": "./dist/snoMongoKu.d.ts",
     "type": "module",
     "scripts": {
-        "test": "npm run build && mocha",
+        "test": "tsc",
         "mocha": "mocha",
         "build": "npm run build:tsc && npm run build:babel && npm run build:rollup",
         "build:tsc": "tsc",
