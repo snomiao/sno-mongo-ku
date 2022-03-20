@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.7.2](https://github.com/snomiao/sno-mongo-ku/compare/v2.7.1...v2.7.2) (2022-03-20)
+
+
+### Bug Fixes
+
+* export time diff ([1b3dd8c](https://github.com/snomiao/sno-mongo-ku/commit/1b3dd8cf3b7c31c5c5bf8974c57a03b364b885d3))
+
 ### [2.7.1](https://github.com/snomiao/sno-mongo-ku/compare/v2.7.0...v2.7.1) (2022-03-03)
 
 
